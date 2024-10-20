@@ -1,0 +1,41 @@
+def find_matrix_sum(n, first_row):
+    """
+    Восстанавливает единичную матрицу по ее первой строке и возвращает сумму ее элементов.
+
+    Args:
+        n: Размерность матрицы.
+        first_row: Список элементов первой строки матрицы.
+
+    Returns:
+        Сумма элементов восстановленной матрицы.
+    """
+
+    # Вычисляем норму первой строки
+    norm = sum(x * x for x in first_row)
+
+    # Создаем пустую матрицу
+    matrix = [[0 for _ in range(n)] for _ in range(n)]
+
+    # Заполняем первую строку матрицы
+    for j in range(n):
+        matrix[0][j] = first_row[j]
+
+    # Восстанавливаем остальные строки
+    for i in range(1, n):
+        for j in range(n):
+            matrix[i][j] = first_row[j] * first_row[i] / norm
+
+    # Вычисляем сумму элементов матрицы
+    matrix_sum = sum(sum(row) for row in matrix)
+
+    return matrix_sum
+
+# Считываем входные данные
+n = int(input())
+first_row = list(map(float, input().split()))
+
+# Вызываем функцию для нахождения суммы элементов матрицы
+matrix_sum = find_matrix_sum(n, first_row)
+
+# Выводим результат
+print(f"{matrix_sum:.3f}")

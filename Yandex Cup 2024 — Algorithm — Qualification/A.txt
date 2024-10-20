@@ -1,0 +1,31 @@
+def max_game_result(n, stones):
+    # Находим минимальное и максимальное количество камней
+    A = min(stones)
+    B = max(stones)
+
+    # Находим первый и последний индексы для A и B
+    first_A = stones.index(A)
+    last_A = len(stones) - 1 - stones[::-1].index(A)
+    first_B = stones.index(B)
+    last_B = len(stones) - 1 - stones[::-1].index(B)
+
+    # Предварительный расчет префиксной суммы
+    prefix_sum = [0] * (n + 1)
+    for i in range(n):
+        prefix_sum[i + 1] = prefix_sum[i] + stones[i]
+
+    # Вычисляем максимальную сумму между кучками
+    max_sum = 0
+
+    # Сравниваем суммы между крайними индексами
+    max_sum = max(max_sum, prefix_sum[last_B + 1] - prefix_sum[first_A])  # A слева от B
+    max_sum = max(max_sum, prefix_sum[last_A + 1] - prefix_sum[first_B])  # B слева от A
+
+    return max_sum
+
+# Чтение входных данных
+n = int(input())
+stones = list(map(int, input().split()))
+
+# Вывод результата
+print(max_game_result(n, stones))
