@@ -1,19 +1,3 @@
-"""
-NVFP4 Batched GEMV - ULTIMATE OPTIMIZED VERSION
-
-КОМБИНИРУЕТ ВСЕ ЛУЧШИЕ ИДЕИ:
-
-1. ✅ torch.compile() - даёт 5.3% ускорение (от submission_compile.py)
-2. ✅ Оригинальная структура submission_final.py (проверенная работает)
-3. ✅ Fast paths для L=1, L<=8 (как в оригинале)
-4. ❌ Без batch processing (медленнее)
-5. ❌ Без Triton (сломан с NVFP4)
-
-РЕЗУЛЬТАТ: 55.803 μs (улучшение от 58.948 μs на 5.3%!)
-
-Требует: PyTorch 2.0+ (torch.compile встроен)
-"""
-
 import torch
 from typing import Tuple
 
