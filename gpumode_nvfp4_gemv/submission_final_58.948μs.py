@@ -1,14 +1,3 @@
-"""
-NVFP4 Batched GEMV - FINAL SUPER-OPTIMIZED VERSION
-На основе анализа кода лидеров
-
-Ключевые изменения:
-1. Правильный reshape масштабов (возможно НЕ flatten)
-2. Оптимальный порядок dimensions для cuBLAS
-3. Минимизация промежуточных операций
-4. Специальная обработка для разных L
-"""
-
 import torch
 from typing import Tuple
 
@@ -26,30 +15,10 @@ output_t = torch.Tensor
 
 
 def custom_kernel(data: input_t) -> output_t:
-    """
-    СУПЕР-ОПТИМИЗИРОВАННАЯ реализация на основе анализа лидеров
-
-    Критические оптимизации:
-    -------------------------
-    1. Правильный формат масштабов для torch._scaled_mm
-    2. Минимизация reshape операций
-    3. Оптимальный memory layout
-    4. Специализация под разные размеры L
-    """
     a_ref, b_ref, _, _, sfa_perm, sfb_perm, c_ref = data
 
     M, K_packed, L = a_ref.shape
 
-    # sfa_perm shape: (32, 4, rest_m, 4, rest_k, L)
-    # где rest_m = M/128, rest_k = K/64
-
-    # cuBLAS ожидает: [rest_m, rest_k, 32, 4, 4]
-    # У нас:          [32, 4, rest_m, 4, rest_k, L]
-    # Нужно: permute(2, 4, 0, 1, 3) -> [rest_m, rest_k, 32, 4, 4]
-
-    # ========================================================================
-    # ULTRA FAST PATH: L = 1
-    # ========================================================================
     if L == 1:
         # Извлекаем для l=0 и делаем правильный permute
         # [32, 4, rest_m, 4, rest_k] -> [rest_m, rest_k, 32, 4, 4]
