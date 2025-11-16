@@ -1,11 +1,3 @@
-"""
-NVFP4 Batched GEMV - CORRECT OPTIMIZATION v3
-На основе анализа: почему safe_ultra был медленнее
-
-Ключевой инсайт: contiguous() на больших тензорах дорого!
-Решение: Минимизировать копирования, оптимизировать только горячий путь
-"""
-
 import torch
 from typing import Tuple
 
