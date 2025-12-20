@@ -1,4 +1,4 @@
-def max_game_result(n, stones):
+/def max_game_result(n, stones):
     # Находим минимальное и максимальное количество камней
     A = min(stones)
     B = max(stones)
@@ -28,4 +28,5 @@ n = int(input())
 stones = list(map(int, input().split()))
 
 # Вывод результата
+
 print(max_game_result(n, stones))
